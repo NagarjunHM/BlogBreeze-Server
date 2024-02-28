@@ -1,17 +1,31 @@
 import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
+import cors from "cors";
 
+import cookieParser from "cookie-parser";
 import connectDB from "./ConnectDB.js";
 import userRouter from "./features/router/userRouter.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
+import { authHandler } from "./middlewares/authHandler.js";
 
 const app = express();
 
 app.use(express.json());
 
+const corsOptions = {
+  origin: "http:localhost:5000",
+  methods: ["GET", "POST", "DELETE"],
+};
+app.use(cors({ ...corsOptions, credentials: true }));
+app.use(cookieParser());
+
 // routes
 app.use("/api/user/", userRouter);
+
+app.get("/", authHandler, (req, res) => {
+  res.status(200).json("welcome to BlogBreeze");
+});
 
 // error handler middleware
 app.use(errorHandler);

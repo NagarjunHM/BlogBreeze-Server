@@ -1,5 +1,10 @@
 import { registerUser, loginUser } from "../repository/userRepository.js";
+import jwt from "jsonwebtoken";
 import customError from "../../middlewares/errorHandler.js";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from "../../jwtTokenGenerate.js";
 
 export const registerUserCont = async (req, res, next) => {
   try {
@@ -51,8 +56,65 @@ export const loginUserCont = async (req, res, next) => {
     if (!email) throw new customError(400, "email is required");
     if (!password) throw new customError(400, "password is required");
 
-    const { status, message } = await loginUser(email, password);
-    res.status(status).json(message);
+    const { status, message, refreshToken } = await loginUser(email, password);
+
+    res
+      .cookie("jwt", refreshToken, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24,
+      })
+      .status(status)
+      .json(message);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const logoutUserCont = async (req, res, next) => {
+  try {
+    const rToken = req.cookies?.jwt;
+
+    if (!rToken) {
+      return res.clearCookie("jwt").status(202).json("user logged out");
+    }
+
+    jwt.verify(rToken, process.env.REFRESH_TOKEN, async (err, decode) => {
+      if (decode) {
+        res.clearCookie("jwt").status(200).json("user logged out");
+      } else if (err) {
+        res
+          .clearCookie("jwt")
+          .status(403)
+          .json("user logged out - invalid referesh token");
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const refreshTokenCont = async (req, res, next) => {
+  try {
+    const rToken = req.cookies?.jwt;
+
+    if (!rToken) {
+      throw new customError(401, "missing refresh token");
+    }
+    jwt.verify(rToken, process.env.REFRESH_TOKEN, (err, decode) => {
+      if (err) {
+        throw new customError(403, "invalid refresh token");
+      } else if (decode) {
+        const accessToken = generateAccessToken(decode.email);
+        const refreshToken = generateRefreshToken(decode.email);
+        res
+          .cookie("jwt", refreshToken, {
+            httpOnly: true,
+            maxAge: 1000 * 60 * 60 * 24,
+          })
+          .status(201)
+          .json(accessToken);
+      }
+    });
   } catch (err) {
     next(err);
   }
