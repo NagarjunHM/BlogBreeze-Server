@@ -52,7 +52,6 @@ export const registerUserCont = async (req, res, next) => {
 export const loginUserCont = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-
     if (!email) throw new customError(400, "email is required");
     if (!password) throw new customError(400, "password is required");
 
