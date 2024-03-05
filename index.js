@@ -8,6 +8,7 @@ import connectDB from "./ConnectDB.js";
 import userRouter from "./features/router/userRouter.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { authHandler } from "./middlewares/authHandler.js";
+import blogRouter from "./features/router/blogRouter.js";
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(cookieParser());
 
 // routes
 app.use("/api/user/", userRouter);
+app.use("/api/blog/", blogRouter);
 
 app.get("/", authHandler, (req, res) => {
   res.status(200).json("welcome to BlogBreeze");

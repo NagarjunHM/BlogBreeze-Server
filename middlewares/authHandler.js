@@ -1,7 +1,8 @@
+import { checkUserPresent } from "../features/repository/userRepository.js";
 import customError from "./errorHandler.js";
 import jwt from "jsonwebtoken";
 
-export const authHandler = (req, res, next) => {
+export const authHandler = async (req, res, next) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
 
@@ -13,8 +14,12 @@ export const authHandler = (req, res, next) => {
       if (err) {
         throw new customError(403, "invalid token");
       }
-      next();
+      req.email = decoded.email;
     });
+
+    const userId = await checkUserPresent(req.email);
+    req.userId = userId;
+    next();
   } catch (err) {
     next(err);
   }

@@ -53,3 +53,17 @@ export const loginUser = async (email, password) => {
     throw err;
   }
 };
+
+// function to check user present or not
+export const checkUserPresent = async (email) => {
+  try {
+    const validEmail = await userModel.findOne({ email });
+
+    if (!validEmail) {
+      throw new customError(400, "user not found ");
+    }
+    return validEmail._id;
+  } catch (err) {
+    throw err;
+  }
+};
