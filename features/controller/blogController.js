@@ -6,7 +6,6 @@ import {
   fetchBlog,
   fetchUserBlog,
   fetchAllBlogs,
-  // fetchAllBlogs,
 } from "../repository/blogRepository.js";
 
 // create blog
@@ -52,11 +51,13 @@ export const editBlogCont = async (req, res, next) => {
       description,
     };
 
+    console.log(req.file);
+
     const { status, message } = await editBlog(
       updatedBlogData.title,
       updatedBlogData.content,
       updatedBlogData.description,
-      req.file,
+      req.file?.path,
       req.userId,
       id
     );
@@ -67,7 +68,7 @@ export const editBlogCont = async (req, res, next) => {
   }
 };
 
-// deletenblog
+// delete blog
 export const deleteBlogCont = async (req, res, next) => {
   try {
     const { status, message } = await deleteBlog(req.userId, req.params.id);

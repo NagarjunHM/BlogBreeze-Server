@@ -23,7 +23,6 @@ export const deleteImageFromStorage = async (filePath) => {
     await fs.unlink(imagePath);
     console.log(`Image ${filePath} deleted successfully`);
   } catch (err) {
-    console.log(err);
     throw new customError(400, "image failed to delete");
   }
 };

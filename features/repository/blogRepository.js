@@ -40,11 +40,15 @@ export const editBlog = async (
 
     if (!blog) throw new customError(400, "Blog not found");
 
+    if (blog.picture) {
+      await deleteImageFromStorage(blog.picture);
+    }
+
     // Update the properties individually
     blog.title = title;
     blog.content = content;
     blog.description = description;
-    blog.picture = picture.path;
+    blog.picture = picture;
 
     await blog.save();
 
