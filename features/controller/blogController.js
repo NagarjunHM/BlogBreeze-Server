@@ -17,10 +17,11 @@ export const insertNewBlogCont = async (req, res, next) => {
     if (!title) throw new customError(400, "blog title is required");
     if (!content) throw new customError(400, "blog content is required");
 
+    console.log(req.file);
     const { status, message } = await insertNewBlog(
       title,
       description,
-      req.file.path,
+      req.file?.path,
       content,
       req.userId
     );

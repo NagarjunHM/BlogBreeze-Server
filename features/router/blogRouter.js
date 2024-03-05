@@ -8,7 +8,7 @@ import {
   fetchAllBlogsCont,
 } from "../controller/blogController.js";
 import { authHandler } from "../../middlewares/authHandler.js";
-import { upload } from "../../middlewares/fileUploadHnadler.js";
+import { upload } from "../../middlewares/fileUploadHandler.js";
 
 const blogRouter = express.Router();
 

@@ -1,6 +1,7 @@
 import blogModel from "../schema/blogSchema.js";
 import customError from "../../middlewares/errorHandler.js";
 import userModel from "../schema/userSchema.js";
+import { deleteImageFromStorage } from "../../middlewares/fileUploadHandler.js";
 
 // insert new blog
 export const insertNewBlog = async (
@@ -56,12 +57,15 @@ export const editBlog = async (
 // delete blog
 export const deleteBlog = async (user, blogId) => {
   try {
-    const result = await blogModel.deleteOne({ user, _id: blogId });
-
-    if (result.deletedCount === 1) {
-      return { status: 200, message: "blog deleted successfully" };
+    const result = await blogModel.findOneAndDelete({ user, _id: blogId });
+    if (!result) {
+      throw new customError(400, "blog not found");
     }
-    throw new customError(400, "blog not found");
+    if (result.picture) {
+      await deleteImageFromStorage(result.picture);
+    }
+
+    return { status: 200, message: "blog deleted successfully" };
   } catch (err) {
     throw err;
   }
