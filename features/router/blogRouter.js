@@ -18,7 +18,7 @@ blogRouter.post(
   upload.single("picture"),
   insertNewBlogCont
 );
-blogRouter.put("/:id", authHandler, editBlogCont);
+blogRouter.put("/:id", authHandler, upload.single("picture"), editBlogCont);
 blogRouter.delete("/:id", authHandler, deleteBlogCont);
 blogRouter.get("/detail/:id", fetchBlogCont);
 blogRouter.get("/:email", fetchUserBlogCont);

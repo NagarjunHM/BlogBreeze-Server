@@ -43,7 +43,7 @@ export const editBlog = async (
     blog.title = title;
     blog.content = content;
     blog.description = description;
-    blog.picture = picture;
+    blog.picture = picture.path;
 
     await blog.save();
 

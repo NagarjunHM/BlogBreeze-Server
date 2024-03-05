@@ -14,8 +14,6 @@ export const insertNewBlogCont = async (req, res, next) => {
   try {
     const { title, description, content } = req.body;
 
-    console.log(req.file);
-
     if (!title) throw new customError(400, "blog title is required");
     if (!content) throw new customError(400, "blog content is required");
 
@@ -36,7 +34,7 @@ export const insertNewBlogCont = async (req, res, next) => {
 // edit blog
 export const editBlogCont = async (req, res, next) => {
   try {
-    const { title, content, description, picture } = req.body;
+    const { title, content, description } = req.body;
     const id = req.params.id;
 
     // Check if title and content are provided
@@ -51,14 +49,13 @@ export const editBlogCont = async (req, res, next) => {
       title,
       content,
       description,
-      picture,
     };
 
     const { status, message } = await editBlog(
       updatedBlogData.title,
       updatedBlogData.content,
       updatedBlogData.description,
-      updatedBlogData.picture,
+      req.file,
       req.userId,
       id
     );
