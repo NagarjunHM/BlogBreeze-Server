@@ -1,10 +1,7 @@
 import { registerUser, loginUser } from "../repository/userRepository.js";
 import jwt from "jsonwebtoken";
 import customError from "../../middlewares/errorHandler.js";
-import {
-  generateAccessToken,
-  generateRefreshToken,
-} from "../../jwtTokenGenerate.js";
+import { generateAccessToken } from "../../jwtTokenGenerate.js";
 
 export const registerUserCont = async (req, res, next) => {
   try {
@@ -60,6 +57,8 @@ export const loginUserCont = async (req, res, next) => {
     res
       .cookie("jwt", refreshToken, {
         httpOnly: true,
+        // secure: false,
+        // sameSite: "None",
         maxAge: 1000 * 60 * 60 * 24,
       })
       .status(status)
@@ -71,6 +70,7 @@ export const loginUserCont = async (req, res, next) => {
 
 export const logoutUserCont = async (req, res, next) => {
   try {
+    console.log(req.cookies);
     const rToken = req.cookies?.jwt;
 
     if (!rToken) {
@@ -94,6 +94,7 @@ export const logoutUserCont = async (req, res, next) => {
 
 export const refreshTokenCont = async (req, res, next) => {
   try {
+    console.log(req.cookies);
     const rToken = req.cookies?.jwt;
 
     if (!rToken) {
@@ -104,14 +105,7 @@ export const refreshTokenCont = async (req, res, next) => {
         throw new customError(403, "invalid refresh token");
       } else if (decode) {
         const accessToken = generateAccessToken(decode.email);
-        const refreshToken = generateRefreshToken(decode.email);
-        res
-          .cookie("jwt", refreshToken, {
-            httpOnly: true,
-            maxAge: 1000 * 60 * 60 * 24,
-          })
-          .status(201)
-          .json(accessToken);
+        res.status(200).json(accessToken);
       }
     });
   } catch (err) {

@@ -48,7 +48,11 @@ export const loginUser = async (email, password) => {
     const accessToken = generateAccessToken(validUser.email);
     const refreshToken = generateRefreshToken(validUser.email);
 
-    return { status: 200, message: accessToken, refreshToken };
+    return {
+      status: 200,
+      message: { token: accessToken, email: validUser.email },
+      refreshToken,
+    };
   } catch (err) {
     throw err;
   }

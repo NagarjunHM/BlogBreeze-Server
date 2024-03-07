@@ -13,6 +13,6 @@ const userRouter = express.Router();
 userRouter.post("/register", registerUserCont);
 userRouter.post("/login", loginUserCont);
 userRouter.post("/logout", logoutUserCont);
-userRouter.post("/refreshToken", refreshTokenCont);
+userRouter.get("/refreshToken", refreshTokenCont);
 
 export default userRouter;

@@ -13,6 +13,7 @@ export const insertNewBlogCont = async (req, res, next) => {
   try {
     const { title, description, content } = req.body;
 
+    console.log(req.body);
     if (!title) throw new customError(400, "blog title is required");
     if (!content) throw new customError(400, "blog content is required");
 

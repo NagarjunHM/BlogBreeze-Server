@@ -13,7 +13,7 @@ import { upload } from "../../middlewares/fileUploadHandler.js";
 const blogRouter = express.Router();
 
 blogRouter.post(
-  "/newPost",
+  "/newBlog",
   authHandler,
   upload.single("picture"),
   insertNewBlogCont
@@ -22,5 +22,5 @@ blogRouter.put("/:id", authHandler, upload.single("picture"), editBlogCont);
 blogRouter.delete("/:id", authHandler, deleteBlogCont);
 blogRouter.get("/detail/:id", fetchBlogCont);
 blogRouter.get("/:email", fetchUserBlogCont);
-blogRouter.get("/", fetchAllBlogsCont);
+blogRouter.get("/", authHandler, fetchAllBlogsCont);
 export default blogRouter;
