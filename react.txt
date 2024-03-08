@@ -1,0 +1,115 @@
+=======================
+Public Routes
+=======================
+1. Home Page:
+   - Path: /
+   - Description: Landing page displaying a list of all blogs.
+
+2. Blog Detail Page:
+   - Path: /blogs/:blogId
+   - Description: Detailed view of a specific blog.
+
+3. Tag Detail Page:
+   - Path: /tags/:tagId
+   - Description: Displaying blogs associated with a specific tag.
+
+4. User Profile Page:
+   - Path: /users/:userId
+   - Description: Displaying user details and their blogs.
+
+5. Login Page:
+   - Path: /login
+   - Description: Page for user login.
+
+6. Register Page:
+   - Path: /register
+   - Description: Page for user registration.
+
+=======================
+Private Routes (Requires Authentication)
+=======================
+7. Create Blog Page:
+   - Path: /create-blog
+   - Description: Page for creating a new blog.
+
+8. Edit Blog Page:
+   - Path: /edit-blog/:blogId
+   - Description: Page for editing an existing blog.
+
+9. Create Tag Page:
+   - Path: /create-tag
+   - Description: Page for creating a new tag.
+
+10. Edit Tag Page:
+    - Path: /edit-tag/:tagId
+    - Description: Page for editing an existing tag.
+
+11. User Settings Page:
+    - Path: /settings
+    - Description: Page for managing user settings.
+
+12. Notifications Page:
+    - Path: /notifications
+    - Description: Page for displaying user notifications.
+
+13. Following Page:
+    - Path: /following
+    - Description: Page displaying the list of tags the user is following.
+
+14. Liked Blogs Page:
+    - Path: /liked-blogs
+    - Description: Page displaying the list of blogs liked by the user.
+
+15. Draft Blogs Page:
+    - Path: /draft-blogs
+    - Description: Page displaying the list of user's draft blogs.
+
+16. Create Comment Page:
+    - Path: /blogs/:blogId/create-comment
+    - Description: Page for creating a new comment on a blog.
+
+17. Edit Comment Page:
+    - Path: /comments/:commentId/edit
+    - Description: Page for editing an existing comment.
+
+18. User Followed Tags Page:
+    - Path: /followed-tags
+    - Description: Page displaying the list of tags followed by the user.
+
+Note: Make sure to implement appropriate authentication checks in your React components to protect private routes.
+
+
+
+=======================
+App Structure
+=======================
+<BrowserRouter>
+  <Switch>
+
+    {/* Public Routes */}
+    <Route exact path="/" component={HomePage} />
+    <Route path="/blogs/:blogId" component={BlogDetailPage} />
+    <Route path="/tags/:tagId" component={TagDetailPage} />
+    <Route path="/users/:userId" component={UserProfilePage} />
+    <Route path="/login" component={LoginPage} />
+    <Route path="/register" component={RegisterPage} />
+
+    {/* Private Routes (Requires Authentication) */}
+    <PrivateRoute path="/create-blog" component={CreateBlogPage} />
+    <PrivateRoute path="/edit-blog/:blogId" component={EditBlogPage} />
+    <PrivateRoute path="/create-tag" component={CreateTagPage} />
+    <PrivateRoute path="/edit-tag/:tagId" component={EditTagPage} />
+    <PrivateRoute path="/settings" component={UserSettingsPage} />
+    <PrivateRoute path="/notifications" component={NotificationsPage} />
+    <PrivateRoute path="/following" component={FollowingPage} />
+    <PrivateRoute path="/liked-blogs" component={LikedBlogsPage} />
+    <PrivateRoute path="/draft-blogs" component={DraftBlogsPage} />
+    <PrivateRoute path="/blogs/:blogId/create-comment" component={CreateCommentPage} />
+    <PrivateRoute path="/comments/:commentId/edit" component={EditCommentPage} />
+    <PrivateRoute path="/followed-tags" component={FollowedTagsPage} />
+
+    {/* 404 Page Not Found */}
+    <Route component={PageNotFound} />
+
+  </Switch>
+</BrowserRouter>
