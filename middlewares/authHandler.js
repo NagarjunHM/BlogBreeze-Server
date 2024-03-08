@@ -17,8 +17,8 @@ export const authHandler = async (req, res, next) => {
       req.email = decoded.email;
     });
 
-    const userId = await checkUserPresent(req.email);
-    req.userId = userId;
+    const user = await checkUserPresent(req.email);
+    req.user = user;
     next();
   } catch (err) {
     next(err);

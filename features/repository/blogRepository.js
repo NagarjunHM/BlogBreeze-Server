@@ -9,7 +9,9 @@ export const insertNewBlog = async (
   description,
   picture,
   content,
-  userId
+  userId,
+  published,
+  name
 ) => {
   try {
     const newBlog = await blogModel({
@@ -18,6 +20,8 @@ export const insertNewBlog = async (
       picture,
       content,
       user: userId,
+      published,
+      name,
     });
     await newBlog.save();
     return { status: 201, message: "blog created successful" };
@@ -91,27 +95,6 @@ export const fetchBlog = async (blogId) => {
   }
 };
 
-// fetch all blogs of a specific user
-export const fetchUserBlog = async (email) => {
-  try {
-    const user = await userModel.findOne({ email });
-
-    if (!user) {
-      throw new customError(400, "user not found ");
-    }
-
-    const blog = await blogModel.find({ user: user._id });
-
-    if (!blog) {
-      throw new customError(400, "no blogs found");
-    }
-
-    return { status: 200, message: blog };
-  } catch (err) {
-    throw err;
-  }
-};
-
 // fetch all blogs
 export const fetchAllBlogs = async () => {
   try {
@@ -122,6 +105,33 @@ export const fetchAllBlogs = async () => {
     }
 
     return { status: 200, message: result };
+  } catch (err) {
+    throw err;
+  }
+};
+
+// fetch all blogs of a specific user
+export const fetchUserBlog = async (id, published) => {
+  try {
+    const user = await userModel.findOne({ id });
+
+    if (!user) {
+      throw new customError(400, "user not found ");
+    }
+
+    const blogParams = { user: user._id };
+
+    if (published !== undefined) {
+      blogParams.published = published;
+    }
+
+    const blog = await blogModel.find(blogParams);
+
+    if (!blog) {
+      throw new customError(400, "no blogs found");
+    }
+
+    return { status: 200, message: blog };
   } catch (err) {
     throw err;
   }

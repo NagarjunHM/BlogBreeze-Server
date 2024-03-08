@@ -11,7 +11,7 @@ import {
 // create blog
 export const insertNewBlogCont = async (req, res, next) => {
   try {
-    const { title, description, content } = req.body;
+    const { title, description, content, published } = req.body;
 
     console.log(req.body);
     if (!title) throw new customError(400, "blog title is required");
@@ -23,7 +23,9 @@ export const insertNewBlogCont = async (req, res, next) => {
       description,
       req.file?.path,
       content,
-      req.userId
+      req.user._id,
+      published,
+      req.user.name
     );
 
     res.status(status).json(message);
@@ -91,23 +93,23 @@ export const fetchBlogCont = async (req, res, next) => {
   }
 };
 
-export const fetchUserBlogCont = async (req, res, next) => {
+export const fetchAllBlogsCont = async (req, res, next) => {
   try {
-    const email = req.params.email;
-
-    if (!email) throw new customError(400, "email cannot be empty");
-
-    const { status, message } = await fetchUserBlog(email);
-
+    const { status, message } = await fetchAllBlogs();
     res.status(status).json(message);
   } catch (err) {
     next(err);
   }
 };
 
-export const fetchAllBlogsCont = async (req, res, next) => {
+// fetch all blogs of a specific user
+export const fetchUserBlogCont = async (req, res, next) => {
   try {
-    const { status, message } = await fetchAllBlogs();
+    const { userId } = req.params;
+    const { published } = req.query;
+
+    const { status, message } = await fetchUserBlog(userId, published);
+
     res.status(status).json(message);
   } catch (err) {
     next(err);

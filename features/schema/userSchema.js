@@ -8,6 +8,7 @@ const validateEmail = (email) => {
 
 // defining user schema
 const userSchema = new mongoose.Schema({
+  id: { type: String, unique: true },
   name: {
     type: String,
     required: [true, "name is required"],

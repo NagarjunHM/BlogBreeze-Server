@@ -21,6 +21,6 @@ blogRouter.post(
 blogRouter.put("/:id", authHandler, upload.single("picture"), editBlogCont);
 blogRouter.delete("/:id", authHandler, deleteBlogCont);
 blogRouter.get("/detail/:id", fetchBlogCont);
-blogRouter.get("/:email", fetchUserBlogCont);
-blogRouter.get("/", authHandler, fetchAllBlogsCont);
+blogRouter.get("/:userId", fetchUserBlogCont);
+blogRouter.get("/", fetchAllBlogsCont);
 export default blogRouter;
