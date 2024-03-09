@@ -1,26 +1,31 @@
 import express from "express";
 import {
   insertNewBlogCont,
-  editBlogCont,
+  updateBlogCont,
   deleteBlogCont,
-  fetchBlogCont,
-  fetchUserBlogCont,
+  getBlogByIdCont,
+  getBlogByUserIdCont,
   fetchAllBlogsCont,
+  likeBlogCont,
+  unlikeBlogCont,
 } from "../controller/blogController.js";
 import { authHandler } from "../../middlewares/authHandler.js";
 import { upload } from "../../middlewares/fileUploadHandler.js";
 
 const blogRouter = express.Router();
 
-blogRouter.post(
-  "/newBlog",
+blogRouter.post("/", authHandler, upload.single("picture"), insertNewBlogCont);
+blogRouter.get("/", fetchAllBlogsCont);
+blogRouter.get("/:blogId", getBlogByIdCont);
+blogRouter.put(
+  "/:blogId",
   authHandler,
   upload.single("picture"),
-  insertNewBlogCont
+  updateBlogCont
 );
-blogRouter.put("/:id", authHandler, upload.single("picture"), editBlogCont);
 blogRouter.delete("/:id", authHandler, deleteBlogCont);
-blogRouter.get("/detail/:id", fetchBlogCont);
-blogRouter.get("/:userId", fetchUserBlogCont);
-blogRouter.get("/", fetchAllBlogsCont);
+blogRouter.get("/user/:userId", getBlogByUserIdCont);
+blogRouter.post("/:blogId/like", authHandler, likeBlogCont);
+blogRouter.delete("/:blogId/unlike", authHandler, unlikeBlogCont);
+
 export default blogRouter;

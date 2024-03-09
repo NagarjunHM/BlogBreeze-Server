@@ -1,5 +1,4 @@
 import express from "express";
-import { authHandler } from "../../middlewares/authHandler.js";
 
 import {
   registerUserCont,

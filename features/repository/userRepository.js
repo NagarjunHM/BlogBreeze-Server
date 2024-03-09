@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import customError from "../../middlewares/errorHandler.js";
-import userModel from "../schema/userSchema.js";
+import userModel from "../Model/userModel.js";
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -9,9 +9,7 @@ import {
 // function to generate unique identifier
 const generateUniqueIdentifier = (name) => {
   const randomString = Math.random().toString(36).substring(2, 8);
-
-  const uniqueIdentifier = `${name}_${randomString}`;
-
+  const uniqueIdentifier = `${name.replace(/\s/g, "")}_${randomString}`;
   return uniqueIdentifier;
 };
 

@@ -1,6 +1,6 @@
-=======================
-User Schema (userModel.js)
-=======================
+## User Schema (userModel.js)
+
+```js
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
@@ -30,10 +30,11 @@ const userSchema = new mongoose.Schema({
 const userModel = mongoose.model("user", userSchema);
 
 export default userModel;
+```
 
-=======================
-Blog Schema (blogModel.js)
-=======================
+## Blog Schema (blogModel.js)
+
+```javascript
 import mongoose from "mongoose";
 
 const blogSchema = new mongoose.Schema({
@@ -54,10 +55,11 @@ blogSchema.set("timestamps", true);
 const blogModel = mongoose.model("blog", blogSchema);
 
 export default blogModel;
+```
 
-=======================
-Tag Schema (tagModel.js)
-=======================
+## Tag Schema (tagModel.js)
+
+```javascript
 import mongoose from "mongoose";
 
 const tagSchema = new mongoose.Schema({
@@ -68,10 +70,11 @@ const tagSchema = new mongoose.Schema({
 const tagModel = mongoose.model("tag", tagSchema);
 
 export default tagModel;
+```
 
-=======================
-Like Schema (likeModel.js)
-=======================
+## Like Schema (likeModel.js)
+
+```javascript
 import mongoose from "mongoose";
 
 const likeSchema = new mongoose.Schema({
@@ -82,10 +85,11 @@ const likeSchema = new mongoose.Schema({
 const likeModel = mongoose.model("like", likeSchema);
 
 export default likeModel;
+```
 
-=======================
-Comment Schema (commentModel.js)
-=======================
+## Comment Schema (commentModel.js)
+
+```javascript
 import mongoose from "mongoose";
 
 const commentSchema = new mongoose.Schema({
@@ -97,10 +101,11 @@ const commentSchema = new mongoose.Schema({
 const commentModel = mongoose.model("comment", commentSchema);
 
 export default commentModel;
+```
 
-=======================
-Followers Schema (followersModel.js)
-=======================
+## Followers Schema (followersModel.js)
+
+```javascript
 import mongoose from "mongoose";
 
 const followersSchema = new mongoose.Schema({
@@ -111,10 +116,11 @@ const followersSchema = new mongoose.Schema({
 const Followers = mongoose.model("Followers", followersSchema);
 
 export default Followers;
+```
 
-=======================
-Following Schema (followingModel.js)
-=======================
+## Following Schema (followingModel.js)
+
+```javascript
 import mongoose from "mongoose";
 
 const followingSchema = new mongoose.Schema({
@@ -125,10 +131,11 @@ const followingSchema = new mongoose.Schema({
 const Following = mongoose.model("Following", followingSchema);
 
 export default Following;
+```
 
-=======================
-TagFollowing Schema (tagFollowingModel.js)
-=======================
+## TagFollowing Schema (tagFollowingModel.js)
+
+```javascript
 import mongoose from "mongoose";
 
 const tagFollowingSchema = new mongoose.Schema({
@@ -139,42 +146,74 @@ const tagFollowingSchema = new mongoose.Schema({
 const TagFollowing = mongoose.model("TagFollowing", tagFollowingSchema);
 
 export default TagFollowing;
+```
 
-=======================
-API Endpoints
-=======================
-1. User System:
-   + Register User: POST /api/users/register
-   + Login User: POST /api/users/login (Requires Authentication)
-   + Logout User: POST /api/users/logout
-   + Refresh Token : POST /api/users/refreshToken
-   - Follow User: POST /api/users/:userId/follow (Requires Authentication)
-   - Unfollow User: DELETE /api/users/:userId/unfollow (Requires Authentication)
-   - Get Followers of a User: GET /api/followers/:userId (Requires Authentication)
-   - Get Users Followed by a User: GET /api/following/:userId (Requires Authentication)
-   - Get Tags Followed by a User: GET /api/tag-following/:userId (Requires Authentication)
+---
 
-2. Blog System:
-   + Create Blog: POST /api/blogs (Requires Authentication)
-   + Get All Blogs: GET /api/blogs
-   + Get Blog by ID: GET /api/blogs/:blogId
-   + Update Blog: PUT /api/blogs/:blogId (Requires Authentication)
-   + Delete Blog: DELETE /api/blogs/:blogId (Requires Authentication)
-   - Like Blog: POST /api/blogs/:blogId/like (Requires Authentication)
-   - Unlike Blog: DELETE /api/blogs/:blogId/unlike (Requires Authentication)
+# API Endpoints
 
-3. Tag System:
-   - Create Tag: POST /api/tags (Requires Authentication)
-   - Get All Tags: GET /api/tags
-   - Get Tag by ID: GET /api/tags/:tagId
-   - Update Tag: PUT /api/tags/:tagId (Requires Authentication)
-   - Delete Tag: DELETE /api/tags/:tagId (Requires Authentication)
-   - Follow Tag: POST /api/users/:userId/follow/:tagId (Requires Authentication)
-   - Unfollow Tag: DELETE /api/users/:userId/unfollow/:tagId (Requires Authentication)
-   - Get Tags Followed by a User: GET /api/tag-following/:userId (Requires Authentication)
+1. **User System:**
 
- 4. Comments System:
-   - Create Comment: POST /api/comments/:blogId (Requires Authentication)
-   - Get Comments for a Blog: GET /api/comments/:blogId (Requires Authentication)
-   - Update Comment: PUT /api/comments/:commentId (Requires Authentication)
-   - Delete Comment: DELETE /api/comments/:commentId (Requires Authentication)
+   - [x] Register User: `POST /api/users/register`
+
+   - [x] Login User: `POST /api/users/login` (Requires Authentication)
+
+   - [x] Logout User: `POST /api/users/logout`
+
+   - [x] Refresh Token: `POST /api/users/refreshToken`
+
+   - [ ] Follow User: `POST /api/users/:userId/follow` (Requires Authentication)
+
+   - [ ] Unfollow User: `DELETE /api/users/:userId/unfollow` (Requires Authentication)
+
+   - [ ] Get Followers of a User: `GET /api/followers/:userId` (Requires Authentication)
+
+   - [ ] Get Users Followed by a User: `GET /api/following/:userId` (Requires Authentication)
+
+   - [ ] Get Tags Followed by a User: `GET /api/tag-following/:userId` (Requires Authentication)
+
+2. **Blog System:**
+
+   - [x] Create Blog: `POST /api/blogs` (Requires Authentication)
+
+   - [x] Get All Blogs: `GET /api/blogs`
+
+   - [x] Get Blog by ID: `GET /api/blogs/:blogId`
+
+   - [x] Get Blog by UserID: `GET /api/blogs/user/:UserId`
+
+   - [x] Update Blog: `PUT /api/blogs/:blogId` (Requires Authentication)
+
+   - [x] Delete Blog: `DELETE /api/blogs/:blogId` (Requires Authentication)
+
+   - [x] Like Blog: `POST /api/blogs/:blogId/like` (Requires Authentication)
+
+   - [x] Unlike Blog: `DELETE /api/blogs/:blogId/unlike` (Requires Authentication)
+
+3. **Tag System:**
+
+   - [ ] Create Tag: `POST /api/tags` (Requires Authentication)
+
+   - [ ] Get All Tags: `GET /api/tags`
+
+   - [ ] Get Tag by ID: `GET /api/tags/:tagId`
+
+   - [ ] Update Tag: `PUT /api/tags/:tagId` (Requires Authentication)
+
+   - [ ] Delete Tag: `DELETE /api/tags/:tagId` (Requires Authentication)
+
+   - [ ] Follow Tag: `POST /api/users/:userId/follow/:tagId` (Requires Authentication)
+
+   - [ ] Unfollow Tag: `DELETE /api/users/:userId/unfollow/:tagId` (Requires Authentication)
+
+   - [ ] Get Tags Followed by a User: `GET /api/tag-following/:userId` (Requires Authentication)
+
+4. **Comments System:**
+
+   - [ ] Create Comment: `POST /api/comments/:blogId` (Requires Authentication)
+
+   - [ ] Get Comments for a Blog: `GET /api/comments/:blogId` (Requires Authentication)
+
+   - [ ] Update Comment: `PUT /api/comments/:commentId` (Requires Authentication)
+
+   - [ ] Delete Comment: `DELETE /api/comments/:commentId` (Requires Authentication)

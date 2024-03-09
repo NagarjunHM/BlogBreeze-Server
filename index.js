@@ -24,8 +24,8 @@ app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 
 // Routes
-app.use("/api/user/", userRouter);
-app.use("/api/blog/", blogRouter);
+app.use("/api/users/", userRouter);
+app.use("/api/blogs/", blogRouter);
 
 // Error handler middleware
 app.use(errorHandler);

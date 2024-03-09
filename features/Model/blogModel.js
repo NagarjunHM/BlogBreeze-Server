@@ -6,8 +6,10 @@ const blogSchema = new mongoose.Schema({
   picture: { type: String },
   content: { type: String, required: [true, "blog content is required"] },
   published: { type: Boolean, required: true, default: false },
-  name: { type: String, required: true },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
+  tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "tag" }],
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "like" }],
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comment" }],
 });
 
 blogSchema.set("timestamps", true);

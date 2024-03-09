@@ -1,6 +1,7 @@
-import blogModel from "../schema/blogSchema.js";
+import blogModel from "../Model/blogModel.js";
 import customError from "../../middlewares/errorHandler.js";
-import userModel from "../schema/userSchema.js";
+import userModel from "../Model/userModel.js";
+import likeModel from "../Model/likeModel.js";
 import { deleteImageFromStorage } from "../../middlewares/fileUploadHandler.js";
 
 // insert new blog
@@ -10,18 +11,16 @@ export const insertNewBlog = async (
   picture,
   content,
   userId,
-  published,
-  name
+  published
 ) => {
   try {
-    const newBlog = await blogModel({
+    const newBlog = new blogModel({
       title,
       description,
       picture,
       content,
       user: userId,
       published,
-      name,
     });
     await newBlog.save();
     return { status: 201, message: "blog created successful" };
@@ -30,8 +29,39 @@ export const insertNewBlog = async (
   }
 };
 
-// edit your blog
-export const editBlog = async (
+// fetch all blogs
+export const fetchAllBlogs = async () => {
+  try {
+    const result = await blogModel.find();
+
+    if (!result) {
+      throw new customError("200", "no blogs found");
+    }
+
+    return { status: 200, message: result };
+  } catch (err) {
+    throw err;
+  }
+};
+
+// get blog by id
+export const getBlogById = async (blogId) => {
+  try {
+    const result = await blogModel.findById(blogId);
+
+    if (!result) {
+      throw new customError(400, "blog not found");
+    }
+
+    return { status: 200, message: result };
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+// update blog
+export const updateBlog = async (
   title,
   content,
   description,
@@ -48,7 +78,6 @@ export const editBlog = async (
       await deleteImageFromStorage(blog.picture);
     }
 
-    // Update the properties individually
     blog.title = title;
     blog.content = content;
     blog.description = description;
@@ -79,39 +108,8 @@ export const deleteBlog = async (user, blogId) => {
   }
 };
 
-// fetch specific post
-export const fetchBlog = async (blogId) => {
-  try {
-    const result = await blogModel.findById(blogId);
-
-    if (!result) {
-      throw new customError(400, "blog not found");
-    }
-
-    return { status: 200, message: result };
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-};
-
-// fetch all blogs
-export const fetchAllBlogs = async () => {
-  try {
-    const result = await blogModel.find();
-
-    if (!result) {
-      throw new customError("200", "no blogs found");
-    }
-
-    return { status: 200, message: result };
-  } catch (err) {
-    throw err;
-  }
-};
-
 // fetch all blogs of a specific user
-export const fetchUserBlog = async (id, published) => {
+export const getBlogByUserId = async (id, published) => {
   try {
     const user = await userModel.findOne({ id });
 
@@ -132,6 +130,56 @@ export const fetchUserBlog = async (id, published) => {
     }
 
     return { status: 200, message: blog };
+  } catch (err) {
+    throw err;
+  }
+};
+
+// like blog
+export const likeBlog = async (userId, blogId) => {
+  try {
+    const blog = await blogModel.findById(blogId);
+
+    // blog not found
+    if (!blog) throw new customError(400, "blog not found");
+
+    // check if the user's like already exists
+    const likeExist = await likeModel.findOne({ user: userId, blog: blogId });
+
+    if (likeExist)
+      throw new customError(400, "user has already liked the post");
+
+    const newLike = new likeModel({ user: userId, blog: blogId });
+    await newLike.save();
+
+    blog.likes.push(newLike._id);
+    await blog.save();
+
+    return { status: 201, message: newLike };
+  } catch (err) {
+    throw err;
+  }
+};
+
+// unlike blog
+export const unlikeBlog = async (userId, blogId) => {
+  try {
+    const blog = await blogModel.findById(blogId);
+
+    // blog not found
+    if (!blog) throw new customError(400, "blog not found");
+
+    // check if the user has liked
+    const likeExist = await likeModel.findOne({ user: userId, blog: blogId });
+
+    if (!likeExist) throw new customError(400, "user has not liked the blog");
+
+    await likeModel.findOneAndDelete(likeExist._id);
+
+    blog.likes.pull(likeExist._id);
+    await blog.save();
+
+    return { status: 200, message: "blog unliked" };
   } catch (err) {
     throw err;
   }

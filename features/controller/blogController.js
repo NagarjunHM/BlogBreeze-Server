@@ -1,11 +1,13 @@
 import customError from "../../middlewares/errorHandler.js";
 import {
   insertNewBlog,
-  editBlog,
+  updateBlog,
   deleteBlog,
-  fetchBlog,
-  fetchUserBlog,
+  getBlogById,
+  getBlogByUserId,
   fetchAllBlogs,
+  likeBlog,
+  unlikeBlog,
 } from "../repository/blogRepository.js";
 
 // create blog
@@ -24,8 +26,7 @@ export const insertNewBlogCont = async (req, res, next) => {
       req.file?.path,
       content,
       req.user._id,
-      published,
-      req.user.name
+      published
     );
 
     res.status(status).json(message);
@@ -34,11 +35,32 @@ export const insertNewBlogCont = async (req, res, next) => {
   }
 };
 
-// edit blog
-export const editBlogCont = async (req, res, next) => {
+// get all blogs
+export const fetchAllBlogsCont = async (req, res, next) => {
+  try {
+    const { status, message } = await fetchAllBlogs();
+    res.status(status).json(message);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// get blog by id
+export const getBlogByIdCont = async (req, res, next) => {
+  try {
+    const { status, message } = await getBlogById(req.params.blogId);
+
+    res.status(status).json(message);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// update blog
+export const updateBlogCont = async (req, res, next) => {
   try {
     const { title, content, description } = req.body;
-    const id = req.params.id;
+    const id = req.params.blogId;
 
     // Check if title and content are provided
     if (!title || !content) {
@@ -54,14 +76,12 @@ export const editBlogCont = async (req, res, next) => {
       description,
     };
 
-    console.log(req.file);
-
-    const { status, message } = await editBlog(
+    const { status, message } = await updateBlog(
       updatedBlogData.title,
       updatedBlogData.content,
       updatedBlogData.description,
       req.file?.path,
-      req.userId,
+      req.user._id,
       id
     );
 
@@ -74,28 +94,8 @@ export const editBlogCont = async (req, res, next) => {
 // delete blog
 export const deleteBlogCont = async (req, res, next) => {
   try {
-    const { status, message } = await deleteBlog(req.userId, req.params.id);
+    const { status, message } = await deleteBlog(req.user._id, req.params.id);
 
-    res.status(status).json(message);
-  } catch (err) {
-    next(err);
-  }
-};
-
-// fetch specific blog
-export const fetchBlogCont = async (req, res, next) => {
-  try {
-    const { status, message } = await fetchBlog(req.params.id);
-
-    res.status(status).json(message);
-  } catch (err) {
-    next(err);
-  }
-};
-
-export const fetchAllBlogsCont = async (req, res, next) => {
-  try {
-    const { status, message } = await fetchAllBlogs();
     res.status(status).json(message);
   } catch (err) {
     next(err);
@@ -103,12 +103,40 @@ export const fetchAllBlogsCont = async (req, res, next) => {
 };
 
 // fetch all blogs of a specific user
-export const fetchUserBlogCont = async (req, res, next) => {
+export const getBlogByUserIdCont = async (req, res, next) => {
   try {
     const { userId } = req.params;
     const { published } = req.query;
 
-    const { status, message } = await fetchUserBlog(userId, published);
+    const { status, message } = await getBlogByUserId(userId, published);
+
+    res.status(status).json(message);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// like blog
+export const likeBlogCont = async (req, res, next) => {
+  try {
+    const blogId = req.params.blogId;
+    const userId = req.user._id;
+
+    const { status, message } = await likeBlog(userId, blogId);
+
+    res.status(status).json(message);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// unlike blog
+export const unlikeBlogCont = async (req, res, next) => {
+  try {
+    const blogId = req.params.blogId;
+    const userId = req.user._id;
+
+    const { status, message } = await unlikeBlog(userId, blogId);
 
     res.status(status).json(message);
   } catch (err) {
