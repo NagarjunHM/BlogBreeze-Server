@@ -95,7 +95,7 @@ import mongoose from "mongoose";
 const commentSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
   blog: { type: mongoose.Schema.Types.ObjectId, ref: "blog" },
-  content: String,
+  content: { type: String, required: true },
 });
 
 const commentModel = mongoose.model("comment", commentSchema);
@@ -210,10 +210,10 @@ export default TagFollowing;
 
 4. **Comments System:**
 
-   - [ ] Create Comment: `POST /api/comments/:blogId` (Requires Authentication)
+   - [x] Create Comment: `POST /api/comments/:blogId` (Requires Authentication)
 
-   - [ ] Get Comments for a Blog: `GET /api/comments/:blogId` (Requires Authentication)
+   - [x] Get Comments for a Blog: `GET /api/comments/:blogId`
 
-   - [ ] Update Comment: `PUT /api/comments/:commentId` (Requires Authentication)
+   - [x] Update Comment: `PUT /api/comments/:commentId` (Requires Authentication)
 
-   - [ ] Delete Comment: `DELETE /api/comments/:commentId` (Requires Authentication)
+   - [x] Delete Comment: `DELETE /api/comments/:commentId` (Requires Authentication)
