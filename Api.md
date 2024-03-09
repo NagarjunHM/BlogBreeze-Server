@@ -192,11 +192,11 @@ export default TagFollowing;
 
    - [ ] Delete Tag: `DELETE /api/tags/:tagId` (Requires Authentication) x
 
-   - [ ] Follow Tag: `POST /api/users/:userId/follow/:tagId` (Requires Authentication)
+   - [ ] Follow Tag: `POST /api/tags/:userId/follow/:tagId` (Requires Authentication)
 
-   - [ ] Unfollow Tag: `DELETE /api/users/:userId/unfollow/:tagId` (Requires Authentication)
+   - [ ] Unfollow Tag: `DELETE /api/tags/:userId/unfollow/:tagId` (Requires Authentication)
 
-   - [ ] Get Tags Followed by a User: `GET /api/tag-following/:userId` (Requires Authentication)
+   - [ ] Get Tags Followed by a User: `GET /api/tags/tag-following/:userId`
 
 4. **Comments System:**
 

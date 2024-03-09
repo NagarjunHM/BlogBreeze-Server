@@ -5,6 +5,6 @@ const tagSchema = new mongoose.Schema({
   follower: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
 });
 
-const tagModel = mongoose.model(tagSchema);
+const tagModel = mongoose.model("tag", tagSchema);
 
 export default tagModel;
