@@ -8,6 +8,7 @@ import userRouter from "./features/router/userRouter.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import blogRouter from "./features/router/blogRouter.js";
 import commentRouter from "./features/router/commentRouter.js";
+import followRouter from "./features/router/followRouter.js";
 
 const app = express();
 app.use(cookieParser());
@@ -27,6 +28,7 @@ app.use("/uploads", express.static("uploads"));
 app.use("/api/users/", userRouter);
 app.use("/api/blogs/", blogRouter);
 app.use("/api/comments/", commentRouter);
+app.use("/api/follow/", followRouter);
 
 // Error handler middleware
 app.use(errorHandler);

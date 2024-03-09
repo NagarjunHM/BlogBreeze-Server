@@ -162,16 +162,6 @@ export default TagFollowing;
 
    - [x] Refresh Token: `POST /api/users/refreshToken`
 
-   - [ ] Follow User: `POST /api/users/:userId/follow` (Requires Authentication)
-
-   - [ ] Unfollow User: `DELETE /api/users/:userId/unfollow` (Requires Authentication)
-
-   - [ ] Get Followers of a User: `GET /api/followers/:userId` (Requires Authentication)
-
-   - [ ] Get Users Followed by a User: `GET /api/following/:userId` (Requires Authentication)
-
-   - [ ] Get Tags Followed by a User: `GET /api/tag-following/:userId` (Requires Authentication)
-
 2. **Blog System:**
 
    - [x] Create Blog: `POST /api/blogs` (Requires Authentication)
@@ -198,9 +188,9 @@ export default TagFollowing;
 
    - [ ] Get Tag by ID: `GET /api/tags/:tagId`
 
-   - [ ] Update Tag: `PUT /api/tags/:tagId` (Requires Authentication)
+   - [ ] Update Tag: `PUT /api/tags/:tagId` (Requires Authentication) x
 
-   - [ ] Delete Tag: `DELETE /api/tags/:tagId` (Requires Authentication)
+   - [ ] Delete Tag: `DELETE /api/tags/:tagId` (Requires Authentication) x
 
    - [ ] Follow Tag: `POST /api/users/:userId/follow/:tagId` (Requires Authentication)
 
@@ -217,3 +207,13 @@ export default TagFollowing;
    - [x] Update Comment: `PUT /api/comments/:commentId` (Requires Authentication)
 
    - [x] Delete Comment: `DELETE /api/comments/:commentId` (Requires Authentication)
+
+5. **Follow System:**
+
+   - [x] Follow User: `POST /api/users/:userId/follow` (Requires Authentication)
+
+   - [x] Unfollow User: `DELETE /api/users/:userId/unfollow` (Requires Authentication)
+
+   - [x] Get Followers of a User: `GET /api/followers/:userId`
+
+   - [x] Get Users Followed by a User: `GET /api/following/:userId`
