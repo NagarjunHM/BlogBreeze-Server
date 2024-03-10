@@ -46,18 +46,31 @@ export const getTagbyIDCont = async (req, res, next) => {
 };
 export const followTagCont = async (req, res, next) => {
   try {
+    const { status, message } = await followTag(req.user._id, req.params.tagId);
+    res.status(status).json(message);
   } catch (err) {
     next(err);
   }
 };
+
 export const unfollowTagCont = async (req, res, next) => {
   try {
+    const { status, message } = await unfollowTag(
+      req.user._id,
+      req.params.tagId
+    );
+    res.status(status).json(message);
   } catch (err) {
     next(err);
   }
 };
+
 export const getTagsFollowedCont = async (req, res, next) => {
   try {
+    const userId = req.params.userId;
+
+    const { status, message } = await getTagsFollowed(userId);
+    res.status(status).json(message);
   } catch (err) {
     next(err);
   }

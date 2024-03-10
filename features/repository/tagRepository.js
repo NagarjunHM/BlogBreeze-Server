@@ -1,6 +1,7 @@
 import customError from "../../middlewares/errorHandler.js";
 import tagFollowingModel from "../Model/tagFollowingModel.js";
 import tagModel from "../Model/tagModel.js";
+import userModel from "../Model/userModel.js";
 
 // create tag
 export const createTag = async (name) => {
@@ -41,6 +42,10 @@ export const getTagbyID = async (tagId) => {
 // follow tag
 export const followTag = async (userId, tagId) => {
   try {
+    const validTag = await tagModel.findById(tagId);
+
+    if (!validTag) throw new customError(400, "tag does not exist");
+
     const isFollowing = await tagFollowingModel.findOne({
       user: userId,
       tags: tagId,
@@ -69,8 +74,11 @@ export const followTag = async (userId, tagId) => {
 };
 
 // unfollow tag
-export const unfollowTag = async () => {
+export const unfollowTag = async (userId, tagId) => {
   try {
+    const validTag = await tagModel.findById(tagId);
+    if (!validTag) throw new customError(400, "tag does not exist");
+
     // Check if the user is following the tag
     const isFollowing = await tagFollowingModel.findOne({
       user: userId,
@@ -102,7 +110,9 @@ export const unfollowTag = async () => {
 // get tags followed by a user
 export const getTagsFollowed = async (userId) => {
   try {
-    const tags = await tagFollowingModel.findOne({ user: userId });
+    const user = await userModel.findById(userId);
+    if (!user) throw new customError(400, "user not found");
+    const tags = await tagFollowingModel.findOne({ user: user._id });
     return { status: 200, message: tags };
   } catch (err) {
     throw err;
