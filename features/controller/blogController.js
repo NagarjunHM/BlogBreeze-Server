@@ -13,7 +13,7 @@ import {
 // create blog
 export const insertNewBlogCont = async (req, res, next) => {
   try {
-    const { title, description, content, published } = req.body;
+    const { title, description, content, published, tag } = req.body;
 
     console.log(req.body);
     if (!title) throw new customError(400, "blog title is required");
@@ -26,7 +26,8 @@ export const insertNewBlogCont = async (req, res, next) => {
       req.file?.path,
       content,
       req.user._id,
-      published
+      published,
+      tag
     );
 
     res.status(status).json(message);
@@ -59,7 +60,7 @@ export const getBlogByIdCont = async (req, res, next) => {
 // update blog
 export const updateBlogCont = async (req, res, next) => {
   try {
-    const { title, content, description } = req.body;
+    const { title, description, content, published, tag } = req.body;
     const id = req.params.blogId;
 
     // Check if title and content are provided

@@ -7,7 +7,7 @@ const blogSchema = new mongoose.Schema({
   content: { type: String, required: [true, "blog content is required"] },
   published: { type: Boolean, required: true, default: false },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
-  tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "tag" }],
+  tag: { type: mongoose.Schema.Types.ObjectId, ref: "tag" },
   likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "like" }],
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comment" }],
 });

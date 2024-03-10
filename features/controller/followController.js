@@ -5,13 +5,12 @@ import {
   getFollowing,
   getFollowers,
 } from "../repository/followRepository.js";
-import { checkUserPresent } from "../repository/userRepository.js";
 import userModel from "../Model/userModel.js";
 
 // function to check weather user and other user are valid users or not
 const validateUsers = async (userId, other) => {
   // if other user exists
-  const otherUser = await checkUserPresent(other);
+  const otherUser = await userModel.findById(other);
   if (!otherUser) throw new customError(400, "other user not found");
 
   // if user exists

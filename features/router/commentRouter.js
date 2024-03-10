@@ -10,7 +10,7 @@ import { authHandler } from "../../middlewares/authHandler.js";
 const commentRouter = express.Router();
 
 commentRouter.post("/:blogId", authHandler, createCommentCont);
-commentRouter.get("/:blogId", authHandler, getCommentsCont);
+commentRouter.get("/:blogId", getCommentsCont);
 commentRouter.put("/:commentId", authHandler, updateCommentCont);
 commentRouter.delete("/:commentId", authHandler, deleteCommentCont);
 

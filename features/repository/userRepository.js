@@ -6,21 +6,12 @@ import {
   generateRefreshToken,
 } from "../../jwtTokenGenerate.js";
 
-// function to generate unique identifier
-const generateUniqueIdentifier = (name) => {
-  const randomString = Math.random().toString(36).substring(2, 8);
-  const uniqueIdentifier = `${name.replace(/\s/g, "")}_${randomString}`;
-  return uniqueIdentifier;
-};
-
 // register new user
 export const registerUser = async (name, email, password) => {
   try {
     const hash = await bcrypt.hash(password, 10);
     const lowerEmail = email.toLowerCase();
-    const id = generateUniqueIdentifier(name);
     const newUser = await userModel({
-      id,
       name,
       email: lowerEmail,
       password: hash,
@@ -59,7 +50,11 @@ export const loginUser = async (email, password) => {
 
     return {
       status: 200,
-      message: { token: accessToken, email: validUser.email, id: validUser.id },
+      message: {
+        token: accessToken,
+        email: validUser.email,
+        userId: validUser._id,
+      },
       refreshToken,
     };
   } catch (err) {

@@ -21,10 +21,6 @@ const userSchema = new mongoose.Schema({
     },
   },
   password: { type: String, required: [true, "Password is required"] },
-  tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "tag" }],
-  followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
-  following: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
-  tagFollowing: [{ type: mongoose.Schema.Types.ObjectId, ref: "tag" }],
 });
 
 const userModel = mongoose.model("user", userSchema);
@@ -196,7 +192,7 @@ export default TagFollowing;
 
    - [x] Unfollow Tag: `DELETE /api/tags/:userId/unfollow/:tagId` (Requires Authentication)
 
-   - [xa] Get Tags Followed by a User: `GET /api/tags/tag-following/:userId`
+   - [x] Get Tags Followed by a User: `GET /api/tags/tag-following/:userId`
 
 4. **Comments System:**
 

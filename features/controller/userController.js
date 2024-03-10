@@ -70,7 +70,6 @@ export const loginUserCont = async (req, res, next) => {
 
 export const logoutUserCont = async (req, res, next) => {
   try {
-    console.log(req.cookies);
     const rToken = req.cookies?.jwt;
 
     if (!rToken) {

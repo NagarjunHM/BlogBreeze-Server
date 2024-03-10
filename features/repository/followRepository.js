@@ -1,6 +1,5 @@
 import followersModel from "../Model/followersModel.js";
 import followingModel from "../Model/followingModel.js";
-import userModel from "../Model/userModel.js";
 import customError from "../../middlewares/errorHandler.js";
 
 // follow user

@@ -11,7 +11,8 @@ export const insertNewBlog = async (
   picture,
   content,
   userId,
-  published
+  published,
+  tag
 ) => {
   try {
     const newBlog = new blogModel({
@@ -21,6 +22,7 @@ export const insertNewBlog = async (
       content,
       user: userId,
       published,
+      tag,
     });
     await newBlog.save();
     return { status: 201, message: "blog created successful" };
@@ -111,7 +113,7 @@ export const deleteBlog = async (user, blogId) => {
 // fetch all blogs of a specific user
 export const getBlogByUserId = async (id, published) => {
   try {
-    const user = await userModel.findOne({ id });
+    const user = await userModel.findOne({ _id: id });
 
     if (!user) {
       throw new customError(400, "user not found ");

@@ -8,7 +8,6 @@ const validateEmail = (email) => {
 
 // defining user schema
 const userSchema = new mongoose.Schema({
-  id: { type: String, unique: true },
   name: {
     type: String,
     required: [true, "name is required"],
@@ -25,10 +24,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "password is required"],
   },
-  tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "tag" }],
-  followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
-  following: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
-  tagFollowing: [{ type: mongoose.Schema.Types.ObjectId, ref: "tag" }],
 });
 
 const userModel = mongoose.model("user", userSchema);
