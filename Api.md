@@ -182,21 +182,21 @@ export default TagFollowing;
 
 3. **Tag System:**
 
-   - [ ] Create Tag: `POST /api/tags` (Requires Authentication)
+   - [x] Create Tag: `POST /api/tags` (Requires Authentication)
 
-   - [ ] Get All Tags: `GET /api/tags`
+   - [x] Get All Tags: `GET /api/tags`
 
-   - [ ] Get Tag by ID: `GET /api/tags/:tagId`
+   - [x] Get Tag by ID: `GET /api/tags/:tagId`
 
    - [ ] Update Tag: `PUT /api/tags/:tagId` (Requires Authentication) x
 
    - [ ] Delete Tag: `DELETE /api/tags/:tagId` (Requires Authentication) x
 
-   - [ ] Follow Tag: `POST /api/tags/:userId/follow/:tagId` (Requires Authentication)
+   - [x] Follow Tag: `POST /api/tags/:userId/follow/:tagId` (Requires Authentication)
 
-   - [ ] Unfollow Tag: `DELETE /api/tags/:userId/unfollow/:tagId` (Requires Authentication)
+   - [x] Unfollow Tag: `DELETE /api/tags/:userId/unfollow/:tagId` (Requires Authentication)
 
-   - [ ] Get Tags Followed by a User: `GET /api/tags/tag-following/:userId`
+   - [xa] Get Tags Followed by a User: `GET /api/tags/tag-following/:userId`
 
 4. **Comments System:**
 
