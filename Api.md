@@ -156,7 +156,7 @@ export default TagFollowing;
 
    - [x] Logout User: `POST /api/users/logout`
 
-   - [x] Refresh Token: `POST /api/users/refreshToken`
+   - [x] Refresh Token: `GEt /api/users/refreshToken`
 
 2. **Blog System:**
 

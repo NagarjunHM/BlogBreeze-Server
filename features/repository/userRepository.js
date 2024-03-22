@@ -63,6 +63,19 @@ export const loginUser = async (email, password) => {
   }
 };
 
+// fetch user detalis
+export const userDetails = async (userId) => {
+  try {
+    const response = await userModel.findById(userId, "-password");
+
+    if (!response) return { status: 400, message: "user not found" };
+
+    return { status: 200, message: response };
+  } catch (err) {
+    throw err;
+  }
+};
+
 // function to check user present or not
 export const checkUserPresent = async (email) => {
   try {
@@ -72,6 +85,110 @@ export const checkUserPresent = async (email) => {
       throw new customError(400, "user not found ");
     }
     return validEmail;
+  } catch (err) {
+    throw err;
+  }
+};
+
+// follow user
+export const followUser = async (userId, otherUserId) => {
+  try {
+    if (userId === otherUserId)
+      throw new customError(400, "user cannot follow himself");
+
+    const user = await userModel.findById(userId);
+    const otherUser = await userModel.findById(otherUserId);
+
+    if (!user || !otherUser) {
+      throw new customError(404, "User not found");
+    }
+
+    if (user.following.includes(otherUser._id))
+      throw new customError(400, "you are already following the user");
+
+    if (otherUser.followers.includes(user._id))
+      throw new customError(400, "The other user is already followed by you");
+
+    user.following.push(otherUser._id);
+    await user.save();
+
+    otherUser.followers.push(user._id);
+    await otherUser.save();
+
+    return { status: 201, message: "user followed successfully" };
+  } catch (err) {
+    throw err;
+  }
+};
+
+// unfollow user
+export const unFollowUser = async (userId, otherUserId) => {
+  try {
+    if (userId === otherUserId)
+      throw new customError(400, "user cannot unfollow himself");
+
+    const user = await userModel.findById(userId);
+    const otherUser = await userModel.findById(otherUserId);
+
+    if (!user || !otherUser) {
+      throw new customError(404, "User not found");
+    }
+
+    if (!user.following.includes(otherUser._id))
+      throw new customError(400, "You are not following the user");
+
+    if (!otherUser.followers.includes(user._id))
+      throw new customError(400, "The other user is not followed by you");
+
+    user.following = user.following.filter(
+      (id) => id.toString() !== otherUser._id.toString()
+    );
+    await user.save();
+
+    otherUser.followers = otherUser.followers.filter(
+      (id) => id.toString() !== user._id.toString()
+    );
+    await otherUser.save();
+
+    return { status: 200, message: "user unfollowed successfully" };
+  } catch (err) {
+    throw err;
+  }
+};
+
+// get user's followers
+export const getFollowers = async (userId) => {
+  try {
+    const followers = await userModel
+      .findById(userId, "followers")
+      .populate("followers", "-password");
+
+    if (!followers) return { status: 400, message: "user not found" };
+
+    return { status: 200, message: followers };
+  } catch (err) {
+    throw err;
+  }
+};
+
+// get user's following
+export const getFollowing = async (userId) => {
+  try {
+    const following = await userModel
+      .findById(userId, "following")
+      .populate("following", "-password");
+
+    if (!following) return { status: 400, message: "user not found" };
+
+    return { status: 200, message: following };
+  } catch (err) {
+    throw err;
+  }
+};
+
+// get tags followed by user
+export const getTagsFollowed = async () => {
+  try {
   } catch (err) {
     throw err;
   }

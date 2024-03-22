@@ -1,8 +1,17 @@
-import { registerUser, loginUser } from "../repository/userRepository.js";
+import {
+  registerUser,
+  loginUser,
+  userDetails,
+  followUser,
+  unFollowUser,
+  getFollowers,
+  getFollowing,
+} from "../repository/userRepository.js";
 import jwt from "jsonwebtoken";
 import customError from "../../middlewares/errorHandler.js";
 import { generateAccessToken } from "../../jwtTokenGenerate.js";
 
+// registration
 export const registerUserCont = async (req, res, next) => {
   try {
     let passwordRegex =
@@ -46,6 +55,7 @@ export const registerUserCont = async (req, res, next) => {
   }
 };
 
+// login
 export const loginUserCont = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -68,6 +78,21 @@ export const loginUserCont = async (req, res, next) => {
   }
 };
 
+// fetch user details
+export const userDetailsCont = async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+
+    if (!userId) res.status(400).json("userId cannot be empty");
+
+    const { status, message } = await userDetails(userId);
+    res.status(status).json(message);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// logout
 export const logoutUserCont = async (req, res, next) => {
   try {
     const rToken = req.cookies?.jwt;
@@ -91,6 +116,7 @@ export const logoutUserCont = async (req, res, next) => {
   }
 };
 
+// refresh token
 export const refreshTokenCont = async (req, res, next) => {
   try {
     const rToken = req.cookies?.jwt;
@@ -106,6 +132,62 @@ export const refreshTokenCont = async (req, res, next) => {
         res.status(200).json(accessToken);
       }
     });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// follow user
+export const followUserCont = async (req, res, next) => {
+  try {
+    const { status, message } = await followUser(
+      req.user._id,
+      req.params.userId
+    );
+
+    res.status(status).json(message);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// unfollow user
+export const unfollowUserCont = async (req, res, next) => {
+  try {
+    const { status, message } = await unFollowUser(
+      req.user._id,
+      req.params.userId
+    );
+
+    res.status(status).json(message);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// get user's followers
+export const getFollowersCont = async (req, res, next) => {
+  try {
+    const { status, message } = await getFollowers(req.params.userId);
+    res.status(status).json(message);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// get user's following
+export const getFollowingCont = async (req, res, next) => {
+  try {
+    const { status, message } = await getFollowing(req.params.userId);
+    res.status(status).json(message);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// get tags followed by user
+export const getTagsFollowedCont = async (req, res, next) => {
+  try {
   } catch (err) {
     next(err);
   }
