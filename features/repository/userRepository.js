@@ -53,7 +53,8 @@ export const loginUser = async (email, password) => {
       message: {
         token: accessToken,
         email: validUser.email,
-        userId: validUser._id,
+        id: validUser._id,
+        name: validUser.name,
       },
       refreshToken,
     };

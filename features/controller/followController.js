@@ -54,7 +54,7 @@ export const unFollowUserCont = async (req, res, next) => {
 //get followers of a user
 export const getFollowersCont = async (req, res, next) => {
   try {
-    const user = await checkUserPresent(req.params.userId);
+    const user = await userModel.findById(req.params.userId);
 
     if (!user) throw new customError(400, "user not found");
 
@@ -68,7 +68,7 @@ export const getFollowersCont = async (req, res, next) => {
 //get users followed by a user
 export const getFollowingCont = async (req, res, next) => {
   try {
-    const user = await checkUserPresent(req.params.userId);
+    const user = await userModel.findById(req.params.userId);
 
     if (!user) throw new customError(400, "user not found");
 

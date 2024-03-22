@@ -34,7 +34,10 @@ export const insertNewBlog = async (
 // fetch all blogs
 export const fetchAllBlogs = async () => {
   try {
-    const result = await blogModel.find();
+    const result = await blogModel
+      .find()
+      .sort({ createdAt: -1 })
+      .populate("user", "_id name");
 
     if (!result) {
       throw new customError("200", "no blogs found");
@@ -49,7 +52,11 @@ export const fetchAllBlogs = async () => {
 // get blog by id
 export const getBlogById = async (blogId) => {
   try {
-    const result = await blogModel.findById(blogId);
+    const result = await blogModel
+      .findById(blogId)
+      .sort({ createdAt: -1 })
+      .populate("user", "_id name")
+      .populate("likes", "user blog");
 
     if (!result) {
       throw new customError(400, "blog not found");
@@ -76,8 +83,10 @@ export const updateBlog = async (
 
     if (!blog) throw new customError(400, "Blog not found");
 
-    if (blog.picture) {
-      await deleteImageFromStorage(blog.picture);
+    if (picture && blog.picture && picture !== blog.picture) {
+      if (blog.picture) {
+        await deleteImageFromStorage(blog.picture);
+      }
     }
 
     blog.title = title;
@@ -125,7 +134,7 @@ export const getBlogByUserId = async (id, published) => {
       blogParams.published = published;
     }
 
-    const blog = await blogModel.find(blogParams);
+    const blog = await blogModel.find(blogParams).populate("user", "_id name");
 
     if (!blog) {
       throw new customError(400, "no blogs found");

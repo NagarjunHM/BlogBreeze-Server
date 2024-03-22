@@ -77,11 +77,17 @@ export const updateBlogCont = async (req, res, next) => {
       description,
     };
 
+    if (req.body?.picture) {
+      updatedBlogData.picture = req.body.picture;
+    } else if (req.file?.path) {
+      updatedBlogData.picture = req.file?.path;
+    }
+
     const { status, message } = await updateBlog(
       updatedBlogData.title,
       updatedBlogData.content,
       updatedBlogData.description,
-      req.file?.path,
+      updatedBlogData.picture,
       req.user._id,
       id
     );

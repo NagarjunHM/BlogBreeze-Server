@@ -19,10 +19,17 @@ export const deleteImageFromStorage = async (filePath) => {
   try {
     const imagePath = path.join(filePath);
 
+    console.log("Attempting to delete file:", imagePath);
+
+    // Check if file exists
     await fs.access(imagePath);
+
+    // Delete the file
     await fs.unlink(imagePath);
+
     console.log(`Image ${filePath} deleted successfully`);
   } catch (err) {
-    throw new customError(400, "image failed to delete");
+    console.error("Error deleting image:", err);
+    throw new customError(400, "Failed to delete image");
   }
 };

@@ -56,6 +56,8 @@ export const deleteCommentCont = async (req, res, next) => {
     const commentId = req.params.commentId;
     const userId = req.user._id;
 
+    console.log(commentId);
+
     const { status, message } = await deleteComment(userId, commentId);
     res.status(status).json(message);
   } catch (err) {

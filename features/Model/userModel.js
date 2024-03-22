@@ -24,6 +24,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "password is required"],
   },
+  bio: {
+    type: String,
+  },
+  about: {
+    type: String,
+  },
+  profilePicture: {
+    type: String,
+  },
 });
 
 const userModel = mongoose.model("user", userSchema);

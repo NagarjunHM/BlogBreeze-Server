@@ -5,6 +5,7 @@ const commentSchema = mongoose.Schema({
   blog: { type: mongoose.Schema.Types.ObjectId, ref: "blog" },
   content: { type: String, required: true },
 });
+commentSchema.set("timestamps", true);
 
 const commentModel = mongoose.model("comment", commentSchema);
 

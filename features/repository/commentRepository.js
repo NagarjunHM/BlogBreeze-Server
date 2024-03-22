@@ -28,7 +28,9 @@ export const getComments = async (blogId) => {
 
     if (!blog) throw new customError(400, "blog not found");
 
-    const comment = await commentModel.find({ blog: blogId });
+    const comment = await commentModel
+      .find({ blog: blogId })
+      .populate("user", "_id name");
 
     return { status: 200, message: comment };
   } catch (err) {
@@ -64,7 +66,7 @@ export const deleteComment = async (userId, commentId) => {
       _id: commentId,
     });
 
-    if (!comment) throw new customError(400, "comment not found");
+    if (!comment) throw new customError(400, "comment not found a ");
 
     const blog = await blogModel.findById(comment.blog);
 

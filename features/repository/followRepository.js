@@ -87,7 +87,7 @@ export const getFollowers = async (userId) => {
   try {
     const followers = await followersModel.findOne({ user: userId });
 
-    if (!followers) return { status: 200, message: "no followers" };
+    if (!followers) return { status: 200, message: [] };
     return { status: 200, message: followers };
   } catch (err) {
     throw err;
@@ -99,6 +99,7 @@ export const getFollowing = async (userId) => {
   try {
     const followers = await followingModel.findOne({ user: userId });
 
+    if (!followers) return { status: 200, message: [] };
     return { status: 200, message: followers };
   } catch (err) {
     throw err;
