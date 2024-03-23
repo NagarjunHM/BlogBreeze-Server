@@ -23,7 +23,7 @@ blogRouter.put(
   upload.single("picture"),
   updateBlogCont
 );
-blogRouter.delete("/:id", authHandler, deleteBlogCont);
+blogRouter.delete("/:userId", authHandler, deleteBlogCont);
 blogRouter.get("/user/:userId", getBlogByUserIdCont);
 blogRouter.post("/:blogId/like", authHandler, likeBlogCont);
 blogRouter.delete("/:blogId/unlike", authHandler, unlikeBlogCont);

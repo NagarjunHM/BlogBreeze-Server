@@ -120,7 +120,7 @@ export const deleteBlog = async (user, blogId) => {
 };
 
 // fetch all blogs of a specific user
-export const getBlogByUserId = async (id, published) => {
+export const getBlogByUserId = async (id) => {
   try {
     const user = await userModel.findOne({ _id: id });
 
@@ -128,13 +128,9 @@ export const getBlogByUserId = async (id, published) => {
       throw new customError(400, "user not found ");
     }
 
-    const blogParams = { user: user._id };
-
-    if (published !== undefined) {
-      blogParams.published = published;
-    }
-
-    const blog = await blogModel.find(blogParams).populate("user", "_id name");
+    const blog = await blogModel
+      .find({ user: user._id })
+      .populate("user", "_id name");
 
     if (!blog) {
       throw new customError(400, "no blogs found");
@@ -152,21 +148,16 @@ export const likeBlog = async (userId, blogId) => {
     const blog = await blogModel.findById(blogId);
 
     // blog not found
-    if (!blog) throw new customError(400, "blog not found");
+    if (!blog) throw new customError(404, "blog not found");
 
     // check if the user's like already exists
-    const likeExist = await likeModel.findOne({ user: userId, blog: blogId });
-
-    if (likeExist)
+    if (blog.likes.includes(userId))
       throw new customError(400, "user has already liked the post");
 
-    const newLike = new likeModel({ user: userId, blog: blogId });
-    await newLike.save();
-
-    blog.likes.push(newLike._id);
+    blog.likes.push(userId);
     await blog.save();
 
-    return { status: 201, message: newLike };
+    return { status: 201, message: "blog liked successfully" };
   } catch (err) {
     throw err;
   }
@@ -178,19 +169,16 @@ export const unlikeBlog = async (userId, blogId) => {
     const blog = await blogModel.findById(blogId);
 
     // blog not found
-    if (!blog) throw new customError(400, "blog not found");
+    if (!blog) throw new customError(404, "blog not found");
 
     // check if the user has liked
-    const likeExist = await likeModel.findOne({ user: userId, blog: blogId });
+    if (!blog.likes.includes(userId))
+      throw new customError(400, "user has not liked the post");
 
-    if (!likeExist) throw new customError(400, "user has not liked the blog");
-
-    await likeModel.findOneAndDelete(likeExist._id);
-
-    blog.likes.pull(likeExist._id);
+    blog.likes.pull(userId);
     await blog.save();
 
-    return { status: 200, message: "blog unliked" };
+    return { status: 200, message: "blog unliked successfully" };
   } catch (err) {
     throw err;
   }

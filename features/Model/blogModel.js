@@ -9,12 +9,6 @@ const blogSchema = new mongoose.Schema(
     user: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
     tag: { type: mongoose.Schema.Types.ObjectId, ref: "tag" },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
-    comments: [
-      {
-        user: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
-        content: { type: String, required: true },
-      },
-    ],
   },
   { timestamps: true }
 );

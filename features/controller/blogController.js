@@ -13,7 +13,7 @@ import {
 // create blog
 export const insertNewBlogCont = async (req, res, next) => {
   try {
-    const { title, description, content, published, tag } = req.body;
+    const { title, description, content, tag } = req.body;
 
     console.log(req.body);
     if (!title) throw new customError(400, "blog title is required");
@@ -26,7 +26,6 @@ export const insertNewBlogCont = async (req, res, next) => {
       req.file?.path,
       content,
       req.user._id,
-      published,
       tag
     );
 
@@ -101,7 +100,10 @@ export const updateBlogCont = async (req, res, next) => {
 // delete blog
 export const deleteBlogCont = async (req, res, next) => {
   try {
-    const { status, message } = await deleteBlog(req.user._id, req.params.id);
+    const { status, message } = await deleteBlog(
+      req.user._id,
+      req.params.userId
+    );
 
     res.status(status).json(message);
   } catch (err) {
@@ -113,9 +115,8 @@ export const deleteBlogCont = async (req, res, next) => {
 export const getBlogByUserIdCont = async (req, res, next) => {
   try {
     const { userId } = req.params;
-    const { published } = req.query;
 
-    const { status, message } = await getBlogByUserId(userId, published);
+    const { status, message } = await getBlogByUserId(userId);
 
     res.status(status).json(message);
   } catch (err) {
