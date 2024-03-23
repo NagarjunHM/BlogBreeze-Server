@@ -29,7 +29,6 @@ app.use("/uploads", express.static("uploads"));
 app.use("/api/users/", userRouter);
 app.use("/api/blogs/", blogRouter);
 app.use("/api/comments/", commentRouter);
-app.use("/api/follow/", followRouter);
 app.use("/api/tags/", tagRouter);
 
 // Error handler middleware

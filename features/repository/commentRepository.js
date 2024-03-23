@@ -66,7 +66,7 @@ export const deleteComment = async (userId, commentId) => {
       _id: commentId,
     });
 
-    if (!comment) throw new customError(400, "comment not found a ");
+    if (!comment) throw new customError(400, "comment not found");
 
     const blog = await blogModel.findById(comment.blog);
 

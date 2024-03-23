@@ -1,7 +1,6 @@
 import blogModel from "../Model/blogModel.js";
 import customError from "../../middlewares/errorHandler.js";
 import userModel from "../Model/userModel.js";
-import likeModel from "../Model/likeModel.js";
 import { deleteImageFromStorage } from "../../middlewares/fileUploadHandler.js";
 
 // insert new blog
