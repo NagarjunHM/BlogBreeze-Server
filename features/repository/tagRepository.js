@@ -1,5 +1,4 @@
 import customError from "../../middlewares/errorHandler.js";
-import tagFollowingModel from "../Model/tagFollowingModel.js";
 import tagModel from "../Model/tagModel.js";
 import userModel from "../Model/userModel.js";
 
@@ -42,32 +41,22 @@ export const getTagbyID = async (tagId) => {
 // follow tag
 export const followTag = async (userId, tagId) => {
   try {
-    const validTag = await tagModel.findById(tagId);
+    const user = await userModel.findById(userId);
+    const tag = await tagModel.findById(tagId);
 
-    if (!validTag) throw new customError(400, "tag does not exist");
+    if (!user || !tag) throw new customError(404, "user or tag not found");
 
-    const isFollowing = await tagFollowingModel.findOne({
-      user: userId,
-      tags: tagId,
-    });
+    // check if user already follows the tag
+    if (user.tagsFollowing.includes(tag._id))
+      throw new customError(400, "user already follows the tag");
 
-    if (isFollowing)
-      throw new customError(400, "user is already following the tag");
+    user.tagsFollowing.push(tag._id);
+    await user.save();
 
-    // update tagFollowingModel
-    await tagFollowingModel.findOneAndUpdate(
-      { user: userId },
-      { $addToSet: { tags: tagId } },
-      { upsert: true }
-    );
+    tag.followers.push(user._id);
+    await tag.save();
 
-    // update tagModel
-    await tagModel.findOneAndUpdate(
-      { _id: tagId },
-      { $addToSet: { followers: userId } }
-    );
-
-    return { status: 201, message: "user followed the tag successfully" };
+    return { status: 201, message: "tag followed successfully" };
   } catch (err) {
     throw err;
   }
@@ -76,32 +65,32 @@ export const followTag = async (userId, tagId) => {
 // unfollow tag
 export const unfollowTag = async (userId, tagId) => {
   try {
-    const validTag = await tagModel.findById(tagId);
-    if (!validTag) throw new customError(400, "tag does not exist");
+    const user = await userModel.findById(userId);
+    const tag = await tagModel.findById(tagId);
 
-    // Check if the user is following the tag
-    const isFollowing = await tagFollowingModel.findOne({
-      user: userId,
-      tags: tagId,
-    });
-
-    if (!isFollowing) {
-      throw new customError(400, "User is not following the tag");
+    // Check if user and tag exist
+    if (!user || !tag) {
+      throw new customError(404, "user or tag not found");
     }
 
-    // Update TagFollowing collection (remove tag)
-    await tagFollowingModel.findOneAndUpdate(
-      { user: userId },
-      { $pull: { tags: tagId } }
-    );
+    // Check if user follows the tag
+    if (!user.tagsFollowing.includes(tagId)) {
+      throw new customError(400, "user does not follow the tag");
+    }
 
-    // Update Tag model (remove follower)
-    await tagModel.findOneAndUpdate(
-      { _id: tagId },
-      { $pull: { followers: userId } }
+    // Remove tag from user's followed tags
+    user.tagsFollowing = user.tagsFollowing.filter(
+      (id) => id.toString() !== tagId.toString()
     );
+    await user.save();
 
-    return { status: 200, message: "User unfollowed the tag successfully." };
+    // Remove user from tag's followers
+    tag.followers = tag.followers.filter(
+      (id) => id.toString() !== userId.toString()
+    );
+    await tag.save();
+
+    return { status: 200, message: "tag unfollowed successfully" };
   } catch (err) {
     throw err;
   }
@@ -110,10 +99,11 @@ export const unfollowTag = async (userId, tagId) => {
 // get tags followed by a user
 export const getTagsFollowed = async (userId) => {
   try {
-    const user = await userModel.findById(userId);
+    const user = await userModel.findById(userId, "tagsFollowing");
+
     if (!user) throw new customError(400, "user not found");
-    const tags = await tagFollowingModel.findOne({ user: user._id });
-    return { status: 200, message: tags };
+
+    return { status: 200, message: user };
   } catch (err) {
     throw err;
   }

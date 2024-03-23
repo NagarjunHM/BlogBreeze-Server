@@ -44,6 +44,8 @@ export const getTagbyIDCont = async (req, res, next) => {
     next(err);
   }
 };
+
+// follow tag
 export const followTagCont = async (req, res, next) => {
   try {
     const { status, message } = await followTag(req.user._id, req.params.tagId);
