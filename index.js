@@ -18,7 +18,7 @@ app.use(cookieParser());
 // Middleware for handling CORS
 app.use(
   cors({
-    origin: "*",
+    origin: "https://blog-breeze-client.vercel.app/",
     credentials: true,
   })
 );
