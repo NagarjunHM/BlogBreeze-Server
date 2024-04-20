@@ -16,9 +16,14 @@ const app = express();
 app.use(cookieParser());
 
 // Middleware for handling CORS
+const allowedOrigins = [
+  "https://blog-breeze-client.vercel.app",
+  "http://localhost:8000",
+  "http://192.168.0.105:8000/",
+];
 app.use(
   cors({
-    origin: "https://blog-breeze-client.vercel.app",
+    origin: allowedOrigins,
     credentials: true,
   })
 );
