@@ -21,12 +21,22 @@ const allowedOrigins = [
   "http://localhost:8000",
   "http://192.168.0.105:8000/",
 ];
+
 app.use(
   cors({
     origin: allowedOrigins,
     credentials: true,
   })
 );
+
+// Welcome route
+app.get("/", (req, res) => {
+  res
+    .status(200)
+    .send(
+      `Welcome to BlogBrezze server! To know more, you can visit <a href="https://github.com/NagarjunHM/BlogBreeze-Server">BlogBreeze GitHub repository</a>`
+    );
+});
 
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
