@@ -52,4 +52,6 @@ Blog Breeze is a full-stack blogging platform built with Node.js, Express.js, an
 - **Update Comment:** `PUT /api/comments/:commentId` 🛠️ (Requires Authentication)
 - **Delete Comment:** `DELETE /api/comments/:commentId` ❌ (Requires Authentication)
 
-Now, navigating through Blog Breeze's APIs is as smooth as a breeze! 🌬️
+### Request 🐛
+
+- If You find any bug then please create issue i would love to solve that
