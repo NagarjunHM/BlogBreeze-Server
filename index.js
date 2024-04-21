@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
   res
     .status(200)
     .send(
-      `Welcome to BlogBrezze server! To know more, you can visit <a href="https://github.com/NagarjunHM/BlogBreeze-Server">BlogBreeze GitHub repository</a>`
+      `Welcome to BlogBreeze server! To know more, you can visit <a href="https://github.com/NagarjunHM/BlogBreeze-Server">BlogBreeze GitHub repository</a>`
     );
 });
 
