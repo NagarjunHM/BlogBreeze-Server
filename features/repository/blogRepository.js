@@ -45,10 +45,6 @@ export const fetchAllBlogs = async () => {
       .populate("user", "_id name")
       .populate("tag", "_id name");
 
-    if (!result) {
-      throw new customError("200", "no blogs found");
-    }
-
     return { status: 200, message: result };
   } catch (err) {
     throw err;

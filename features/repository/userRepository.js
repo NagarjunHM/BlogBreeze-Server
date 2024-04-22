@@ -231,11 +231,6 @@ export const getUsers = async (featured) => {
     let query = featured ? { featured: true } : {};
 
     const users = await userModel.find(query, "_id name");
-
-    if (users.length === 0) {
-      return { status: 200, message: "no users" };
-    }
-
     return { status: 200, message: users };
   } catch (err) {
     throw err;

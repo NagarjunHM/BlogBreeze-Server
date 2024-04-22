@@ -18,7 +18,7 @@ export const uploadToCloudinary = async (file) => {
     return result.secure_url;
   } catch (error) {
     console.error("Error uploading file to Cloudinary:", error);
-    throw new Error("Error uploading file to Cloudinary");
+    // throw new Error("Error uploading file to Cloudinary");
   }
 };
 
@@ -37,6 +37,6 @@ export const deleteFromCloudinary = async (imageUrl) => {
     console.log("Image deleted from Cloudinary:", result);
   } catch (error) {
     console.error("Error deleting image from Cloudinary:", error);
-    throw new Error("Error deleting image from Cloudinary");
+    // throw new Error("Error deleting image from Cloudinary");
   }
 };
