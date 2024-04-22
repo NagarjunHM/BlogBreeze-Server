@@ -1,35 +1,42 @@
 import multer from "multer";
 import fs from "fs/promises";
 import path from "path";
-import customError from "./errorHandler.js";
+import { v2 as cloudinary } from "cloudinary";
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./uploads");
-  },
-  filename: function (req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
+export const upload = multer({ storage: multer.memoryStorage() });
 
-export const upload = multer({ storage: storage });
-
-// helper function to delete the image from the
-export const deleteImageFromStorage = async (filePath) => {
+// Middleware for uploading images to Cloudinary
+export const uploadToCloudinary = async (file) => {
   try {
-    const imagePath = path.join(filePath);
+    const b64 = Buffer.from(file.buffer).toString("base64");
+    let dataURI = "data:" + file.mimetype + ";base64," + b64;
+    const result = await cloudinary.uploader.upload(dataURI, {
+      folder: "Home",
+      allowed_formats: ["jpg", "jpeg", "png", "webp"],
+    });
 
-    console.log("Attempting to delete file:", imagePath);
+    return result.secure_url;
+  } catch (error) {
+    console.error("Error uploading file to Cloudinary:", error);
+    throw new Error("Error uploading file to Cloudinary");
+  }
+};
 
-    // Check if file exists
-    await fs.access(imagePath);
+// Middleware for deleting images from Cloudinary
+export const deleteFromCloudinary = async (imageUrl) => {
+  try {
+    // Extract public ID with folder from Cloudinary URL
+    const parts = imageUrl.split("/upload/");
+    const publicId = parts[1]
+      .split("/")
+      .slice(1)
+      .join("/")
+      .replace(/\.[^.]+$/, "");
 
-    // Delete the file
-    await fs.unlink(imagePath);
-
-    console.log(`Image ${filePath} deleted successfully`);
-  } catch (err) {
-    console.error("Error deleting image:", err);
-    // throw new customError(400, "Failed to delete image");
+    const result = await cloudinary.uploader.destroy(publicId);
+    console.log("Image deleted from Cloudinary:", result);
+  } catch (error) {
+    console.error("Error deleting image from Cloudinary:", error);
+    throw new Error("Error deleting image from Cloudinary");
   }
 };

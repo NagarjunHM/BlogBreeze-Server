@@ -6,7 +6,7 @@ import {
   unFollowUser,
   getFollowers,
   getFollowing,
-  updateUserDetails,
+  // updateUserDetails,
   getUsers,
 } from "../repository/userRepository.js";
 import jwt from "jsonwebtoken";
@@ -81,24 +81,24 @@ export const loginUserCont = async (req, res, next) => {
 };
 
 // update user details
-export const updateUserDetailsCont = async (req, res, next) => {
-  try {
-    const { name, about } = req.body;
+// export const updateUserDetailsCont = async (req, res, next) => {
+//   try {
+//     const { name, about } = req.body;
 
-    if (!name) throw new customError(400, "name is required");
+//     if (!name) throw new customError(400, "name is required");
 
-    const { status, message } = await updateUserDetails(
-      req.params.userId,
-      name,
-      about,
-      req.file?.path
-    );
+//     const { status, message } = await updateUserDetails(
+//       req.params.userId,
+//       name,
+//       about,
+//       req.file?.path
+//     );
 
-    res.status(status).json(message);
-  } catch (err) {
-    next(err);
-  }
-};
+//     res.status(status).json(message);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 // fetch user details
 export const userDetailsCont = async (req, res, next) => {

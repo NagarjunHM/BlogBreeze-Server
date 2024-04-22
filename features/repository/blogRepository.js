@@ -2,7 +2,8 @@ import blogModel from "../Model/blogModel.js";
 import customError from "../../middlewares/errorHandler.js";
 import userModel from "../Model/userModel.js";
 import tagModel from "../Model/tagModel.js";
-import { deleteImageFromStorage } from "../../middlewares/fileUploadHandler.js";
+import { uploadToCloudinary } from "../../middlewares/fileUploadHandler.js";
+import { deleteFromCloudinary } from "../../middlewares/fileUploadHandler.js";
 
 // insert new blog
 export const insertNewBlog = async (
@@ -14,16 +15,22 @@ export const insertNewBlog = async (
   tag
 ) => {
   try {
+    let pictureUrl;
+
+    if (picture) {
+      pictureUrl = await uploadToCloudinary(picture);
+    }
+
     const newBlog = new blogModel({
       title,
       description,
-      picture,
+      picture: pictureUrl,
       content,
       user: userId,
       tag,
     });
     await newBlog.save();
-    return { status: 201, message: "blog created successful" };
+    return { status: 201, message: newBlog._id };
   } catch (err) {
     throw err;
   }
@@ -79,22 +86,32 @@ export const updateBlog = async (
   blogId
 ) => {
   try {
+    // Find the blog to update
     let blog = await blogModel.findOne({ _id: blogId, user });
 
-    if (!blog) throw new customError(400, "Blog not found");
-
-    if (picture && blog.picture && picture !== blog.picture) {
-      if (blog.picture) {
-        await deleteImageFromStorage(blog.picture);
-      }
+    // Check if the blog exists
+    if (!blog) {
+      throw new customError(400, "Blog not found");
     }
 
+    let pictureUrl;
+
+    if (picture) {
+      if (blog.picture) {
+        await deleteFromCloudinary(blog.picture);
+      }
+
+      pictureUrl = await uploadToCloudinary(picture);
+    }
+
+    // Update blog properties
     blog.title = title;
     blog.content = content;
     blog.description = description;
-    blog.picture = picture;
+    blog.picture = pictureUrl || blog.picture;
     blog.tag = tag;
 
+    // Save the updated blog
     await blog.save();
 
     return { status: 201, message: "Blog updated successfully" };
@@ -111,7 +128,7 @@ export const deleteBlog = async (user, blogId) => {
       throw new customError(400, "blog not found");
     }
     if (result.picture) {
-      await deleteImageFromStorage(result.picture);
+      await deleteFromCloudinary(result.picture);
     }
 
     return { status: 200, message: "blog deleted successfully" };

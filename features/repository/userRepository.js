@@ -5,7 +5,7 @@ import {
   generateAccessToken,
   generateRefreshToken,
 } from "../../jwtTokenGenerate.js";
-import { deleteImageFromStorage } from "../../middlewares/fileUploadHandler.js";
+// import { deleteImageFromStorage } from "../../middlewares/fileUploadHandler.js";
 
 // register new user
 export const registerUser = async (name, email, password) => {
@@ -66,38 +66,38 @@ export const loginUser = async (email, password) => {
 };
 
 // update user details
-export const updateUserDetails = async (
-  userId,
-  name,
-  about,
-  profilePicture
-) => {
-  try {
-    const user = await userModel.findById(userId);
+// export const updateUserDetails = async (
+//   userId,
+//   name,
+//   about,
+//   profilePicture
+// ) => {
+//   try {
+//     const user = await userModel.findById(userId);
 
-    if (!user) throw new customError(404, "user not found");
+//     if (!user) throw new customError(404, "user not found");
 
-    if (
-      profilePicture &&
-      user.profilePicture &&
-      profilePicture !== user.profilePicture
-    ) {
-      if (user.profilePicture) {
-        await deleteImageFromStorage(user.profilePicture);
-      }
-    }
+//     if (
+//       profilePicture &&
+//       user.profilePicture &&
+//       profilePicture !== user.profilePicture
+//     ) {
+//       if (user.profilePicture) {
+//         await deleteImageFromStorage(user.profilePicture);
+//       }
+//     }
 
-    user.name = name;
-    user.about = about;
-    user.profilePicture = profilePicture;
+//     user.name = name;
+//     user.about = about;
+//     user.profilePicture = profilePicture;
 
-    await user.save();
+//     await user.save();
 
-    return { status: 201, message: "user details updated" };
-  } catch (err) {
-    throw err;
-  }
-};
+//     return { status: 201, message: "user details updated" };
+//   } catch (err) {
+//     throw err;
+//   }
+// };
 
 // fetch user detalis
 export const userDetails = async (userId) => {

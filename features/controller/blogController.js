@@ -17,14 +17,13 @@ import {
 export const insertNewBlogCont = async (req, res, next) => {
   try {
     const { title, description, content, tag } = req.body;
-
     if (!title) throw new customError(400, "blog title is required");
     if (!content) throw new customError(400, "blog content is required");
 
     const { status, message } = await insertNewBlog(
       title,
       description,
-      req.file?.path,
+      req.file,
       content,
       req.user._id,
       tag?.value
@@ -90,8 +89,8 @@ export const updateBlogCont = async (req, res, next) => {
 
     if (req.body?.picture) {
       updatedBlogData.picture = req.body.picture;
-    } else if (req.file?.path) {
-      updatedBlogData.picture = req.file?.path;
+    } else if (req.file) {
+      updatedBlogData.picture = req.file;
     }
 
     const { status, message } = await updateBlog(

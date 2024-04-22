@@ -1,6 +1,6 @@
-import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
+import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import connectDB from "./ConnectDB.js";
@@ -8,9 +8,9 @@ import userRouter from "./features/router/userRouter.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import blogRouter from "./features/router/blogRouter.js";
 import commentRouter from "./features/router/commentRouter.js";
-import followRouter from "./features/router/followRouter.js";
 import tagRouter from "./features/router/tagRouter.js";
 import searchRouter from "./features/router/searchRoute.js";
+import { v2 as cloudinary } from "cloudinary";
 
 const app = express();
 app.use(cookieParser());
@@ -21,6 +21,12 @@ const allowedOrigins = [
   "http://localhost:8000",
   "http://192.168.0.105:8000/",
 ];
+
+cloudinary.config({
+  cloud_name: process.env.cloud_name,
+  api_key: process.env.api_key,
+  api_secret: process.env.api_secret,
+});
 
 app.use(
   cors({
